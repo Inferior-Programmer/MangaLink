@@ -63,6 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
       case 3:
         return Profile(
           userData: widget.userData,
+          frozen: false,
+          lookAt: '',
         );
         break;
       case 2:

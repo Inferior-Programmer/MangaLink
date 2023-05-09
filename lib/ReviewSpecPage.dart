@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:newproject/Profile.dart';
 import 'model/callerfunctions.dart';
 import 'MakeReview.dart';
 import 'generalcomponents/AppBar.dart';
@@ -67,6 +68,17 @@ class _PageReviewState extends State<PageReview> {
   ];
 
   List<Widget> userPosting = [];
+  void generalFuncs(i) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => Profile(
+                userData: widget.userData,
+                frozen: true,
+                lookAt: i['username'],
+              )),
+    );
+  }
 
   @override
   void initState() {
@@ -77,8 +89,8 @@ class _PageReviewState extends State<PageReview> {
       'startAt': 0,
       'endAt': 20,
     };
-    getPostList(userPosting, variables, query3, setState, (i) {}, 'username',
-        '  By User: ', "postlist");
+    getPostList(userPosting, variables, query3, setState, generalFuncs,
+        'username', '  By User: ', "postlist");
     for (String vars in widget.tags.split(",")) {
       tags.add(Text(
         vars,

@@ -5,10 +5,17 @@ import 'MakeReview.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'generalcomponents/ReviewList.dart';
+import 'generalcomponents/AppBar.dart';
 
 class Profile extends StatefulWidget {
-  Profile({super.key, required this.userData});
+  Profile(
+      {super.key,
+      required this.userData,
+      required this.frozen,
+      required this.lookAt});
   dynamic userData;
+  bool frozen;
+  String lookAt;
   @override
   State<Profile> createState() => _ProfileState();
 }
@@ -46,7 +53,8 @@ class _ProfileState extends State<Profile> {
 
   void getImage() async {
     Map<String, dynamic> variables = {
-      "username": widget.userData['user']['username'],
+      "username":
+          (widget.frozen) ? widget.lookAt : widget.userData['user']['username'],
     };
     graphqlQuery(getImageQuery, variables).then((result) {
       base64Image = result['data']['imagestring'];
@@ -55,6 +63,9 @@ class _ProfileState extends State<Profile> {
   }
 
   void getImageAndUpload() async {
+    if (widget.frozen) {
+      return;
+    }
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(
         source: ImageSource.gallery,
@@ -111,6 +122,9 @@ class _ProfileState extends State<Profile> {
   }
 
   void generalFunc(i) {
+    if (widget.frozen) {
+      return;
+    }
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -126,7 +140,9 @@ class _ProfileState extends State<Profile> {
       if (val == null) {
         userPosting = [];
         Map<String, dynamic> variables = {
-          'username': widget.userData['user']['username'],
+          'username': (widget.frozen)
+              ? widget.lookAt
+              : widget.userData['user']['username'],
           'startAt': 0,
           'endAt': 20,
         };
@@ -141,10 +157,12 @@ class _ProfileState extends State<Profile> {
     super.initState();
     userPosting = [];
     Map<String, dynamic> variables = {
-      'username': widget.userData['user']['username'],
+      'username':
+          (widget.frozen) ? widget.lookAt : widget.userData['user']['username'],
       'startAt': 0,
       'endAt': 20,
     };
+
     getPostList(userPosting, variables, query6, setState, generalFunc,
         'seriesName', ' Series: ', 'postlistuser');
     getImage();
@@ -158,7 +176,7 @@ class _ProfileState extends State<Profile> {
     } else {
       images = MemoryImage(base64Decode(base64Image));
     }
-    return SingleChildScrollView(
+    Widget scrollviewmain = SingleChildScrollView(
       child: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -222,5 +240,12 @@ class _ProfileState extends State<Profile> {
         ),
       ),
     );
+    if (widget.frozen) {
+      return Scaffold(
+        appBar: getAppBar(context),
+        body: scrollviewmain,
+      );
+    }
+    return scrollviewmain;
   }
 }
