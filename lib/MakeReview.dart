@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'callerfunctions.dart';
+import 'model/callerfunctions.dart';
+import 'generalcomponents/AppBar.dart';
 
 String query4 = '''
 
@@ -66,36 +67,7 @@ class _MakeReviewState extends State<MakeReview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.white,
-                Color.fromARGB(255, 253, 164, 59),
-              ],
-            )),
-          ),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/Logo.png',
-                height: 50,
-                width: 50,
-              ),
-              Text(
-                'MangaLink',
-                style: GoogleFonts.montserrat(
-                    textStyle: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 40,
-                )),
-              )
-            ],
-          )),
+      appBar: getAppBar(context),
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'callerfunctions.dart';
+import 'model/callerfunctions.dart';
 import 'MakeReview.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
+import 'generalcomponents/ReviewList.dart';
 
 class Profile extends StatefulWidget {
   Profile({super.key, required this.userData});
@@ -109,97 +110,43 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  void getPostList() {
-    userPosting = [];
-    Map<String, dynamic> variables = {
-      'username': widget.userData['user']['username'],
-      'startAt': 0,
-      'endAt': 20,
-    };
-    graphqlQuery(query6, variables).then((result) {
-      if (result['data']['postlistuser'] == null ||
-          result['data']['postlistuser']['posts'] == null) {
-        return;
-      }
-
-      for (var i in result['data']['postlistuser']['posts']) {
-        List<Widget> colons = [];
-        colons.add(Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              ' ' + i['title'],
-              style: GoogleFonts.lexend(
-                  textStyle:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            ),
-            SizedBox(
-                height: 25,
-                child: RichText(
-                  text: TextSpan(children: [
-                    TextSpan(
-                        text: 'Rating: ' + i['rating'].toString(),
-                        style: GoogleFonts.lexend(
-                            textStyle: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black))),
-                  ]),
-                ))
-          ],
-        ));
-        colons.add(Align(
-          alignment: Alignment.topLeft,
-          child: Text(
-            i['seriesName'],
-            style: GoogleFonts.lexend(
-                textStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Colors.deepPurple[900],
-            )),
-          ),
-        ));
-        colons.add(Container(
-          margin: EdgeInsets.all(7),
-          child: Text(
-            i['text'],
-            textAlign: TextAlign.justify,
-          ),
-        ));
-        userPosting.add(
-          GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MakeReview(
-                            seriesTitle: i['seriesName'],
-                            startingDescription: i['text'],
-                            startingTitle: i['title'],
-                            seriesId: i['anime'],
-                            userData: widget.userData,
-                            startingRating: i['rating'].toString(),
-                          )),
-                ).then((val) {
-                  if (val == null) {
-                    getPostList();
-                  }
-                });
-              },
-              child: Column(
-                children: colons,
+  void generalFunc(i) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => MakeReview(
+                seriesTitle: i['seriesName'],
+                startingDescription: i['text'],
+                startingTitle: i['title'],
+                seriesId: i['anime'],
+                userData: widget.userData,
+                startingRating: i['rating'].toString(),
               )),
-        );
+    ).then((val) {
+      if (val == null) {
+        userPosting = [];
+        Map<String, dynamic> variables = {
+          'username': widget.userData['user']['username'],
+          'startAt': 0,
+          'endAt': 20,
+        };
+        getPostList(userPosting, variables, query6, setState, generalFunc,
+            'seriesName', ' Series: ', 'postlistuser');
       }
-      setState(() {});
     });
   }
 
   @override
   void initState() {
     super.initState();
-    getPostList();
+    userPosting = [];
+    Map<String, dynamic> variables = {
+      'username': widget.userData['user']['username'],
+      'startAt': 0,
+      'endAt': 20,
+    };
+    getPostList(userPosting, variables, query6, setState, generalFunc,
+        'seriesName', ' Series: ', 'postlistuser');
     getImage();
   }
 

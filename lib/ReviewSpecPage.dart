@@ -4,8 +4,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'callerfunctions.dart';
+import 'model/callerfunctions.dart';
 import 'MakeReview.dart';
+import 'generalcomponents/AppBar.dart';
+import 'generalcomponents/ReviewList.dart';
 
 class PageReview extends StatefulWidget {
   PageReview(
@@ -65,71 +67,18 @@ class _PageReviewState extends State<PageReview> {
   ];
 
   List<Widget> userPosting = [];
-  void getPostList() {
+
+  @override
+  void initState() {
+    super.initState();
     userPosting = [];
     Map<String, dynamic> variables = {
       'anime': widget.id,
       'startAt': 0,
       'endAt': 20,
     };
-    graphqlQuery(query3, variables).then((result) {
-      if (result['data']['postlist'] == null ||
-          result['data']['postlist']['posts'] == null) {
-        return;
-      }
-      for (var i in result['data']['postlist']['posts']) {
-        userPosting.add(Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              ' ' + i['title'],
-              style: GoogleFonts.lexend(
-                  textStyle:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            ),
-            SizedBox(
-                height: 25,
-                child: RichText(
-                  text: TextSpan(children: [
-                    TextSpan(
-                        text: 'Rating: ' + i['rating'].toString(),
-                        style: GoogleFonts.lexend(
-                            textStyle: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black))),
-                  ]),
-                ))
-          ],
-        ));
-        userPosting.add(Align(
-          alignment: Alignment.topLeft,
-          child: Text(
-            '  By User: ' + i['username'],
-            style: GoogleFonts.lexend(
-                textStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Colors.deepPurple[900],
-            )),
-          ),
-        ));
-        userPosting.add(Container(
-          margin: EdgeInsets.all(7),
-          child: Text(
-            i['text'],
-            textAlign: TextAlign.justify,
-          ),
-        ));
-      }
-      setState(() {});
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getPostList();
+    getPostList(userPosting, variables, query3, setState, (i) {}, 'username',
+        '  By User: ', "postlist");
     for (String vars in widget.tags.split(",")) {
       tags.add(Text(
         vars,
@@ -161,36 +110,7 @@ class _PageReviewState extends State<PageReview> {
       ));
     }
     return Scaffold(
-      appBar: AppBar(
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.white,
-                Color.fromARGB(255, 253, 164, 59),
-              ],
-            )),
-          ),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/Logo.png',
-                height: 50,
-                width: 50,
-              ),
-              Text(
-                'MangaLink',
-                style: GoogleFonts.montserrat(
-                    textStyle: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 40,
-                )),
-              )
-            ],
-          )),
+      appBar: getAppBar(context),
       body: SingleChildScrollView(
           child: Container(
         height: MediaQuery.of(context).size.height - 100,
@@ -323,7 +243,21 @@ class _PageReviewState extends State<PageReview> {
                                       ).then((val) {
                                         print(val);
                                         if (val == null) {
-                                          getPostList();
+                                          userPosting = [];
+                                          Map<String, dynamic> variables = {
+                                            'anime': widget.id,
+                                            'startAt': 0,
+                                            'endAt': 20,
+                                          };
+                                          getPostList(
+                                              userPosting,
+                                              variables,
+                                              query3,
+                                              setState,
+                                              (i) {},
+                                              'username',
+                                              '  By User: ',
+                                              "postlist");
                                         }
                                       });
                                     });

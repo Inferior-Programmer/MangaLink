@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'callerfunctions.dart';
+import 'model/callerfunctions.dart';
 import 'dart:convert';
 import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
 import 'ReadPage.dart';
+import 'generalcomponents/AppBar.dart';
 
 class MangaSummary extends StatefulWidget {
   MangaSummary(
@@ -161,39 +162,7 @@ class _MangaSummaryState extends State<MangaSummary> {
           )));
     }
     return Scaffold(
-        appBar: AppBar(
-            flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.white,
-                  Color.fromARGB(255, 253, 164, 59),
-                ],
-              )),
-            ),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/Logo.png',
-                  height: 50,
-                  width: 50,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  'MangaLink',
-                  style: GoogleFonts.montserrat(
-                      textStyle: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 40,
-                  )),
-                )
-              ],
-            )),
+        appBar: getAppBar(context),
         body: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(

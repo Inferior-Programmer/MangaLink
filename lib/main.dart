@@ -6,8 +6,9 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:newproject/HomePage.dart';
 import 'signup.dart';
-import 'callerfunctions.dart';
+import 'model/callerfunctions.dart';
 import 'HomeBar.dart';
+import 'generalcomponents/AppBar.dart';
 
 const String query = '''
 query(\$username: String!, \$password: String!){
@@ -47,39 +48,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.white,
-                Color.fromARGB(255, 253, 164, 59),
-              ],
-            )),
-          ),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/Logo.png',
-                height: 50,
-                width: 50,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                'MangaLink',
-                style: GoogleFonts.montserrat(
-                    textStyle: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 40,
-                )),
-              )
-            ],
-          )),
+      appBar: getAppBar(context, firstPages: true),
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
@@ -318,7 +287,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: const Login(),
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(brightness: Brightness.light),
+      theme: ThemeData(
+        brightness: Brightness.light,
+        iconTheme: IconThemeData(color: Colors.orange),
+      ),
     );
   }
 }

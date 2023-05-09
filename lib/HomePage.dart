@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'callerfunctions.dart';
+import 'model/callerfunctions.dart';
 import 'package:flutter/material.dart';
-import 'MangaPreview.dart';
+import 'generalcomponents/MangaPreview.dart';
 
 const double coverHeight = 250;
 const double coverWidth = 190;

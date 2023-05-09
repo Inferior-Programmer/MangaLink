@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'dart:convert';
 import 'dart:math';
-import 'MangaSummary.dart';
-import 'ReviewSpecPage.dart';
+import '../MangaSummary.dart';
+import '../ReviewSpecPage.dart';
 
 class MangaPreview extends StatefulWidget {
   MangaPreview(

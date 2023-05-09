@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'callerfunctions.dart';
+import 'model/callerfunctions.dart';
+import 'generalcomponents/AppBar.dart';
 
 class Read extends StatefulWidget {
   Read({super.key, required this.chapters, required this.initialIndex});
@@ -102,39 +103,7 @@ class _ReadState extends State<Read> {
       );
     }
     return Scaffold(
-      appBar: AppBar(
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.white,
-                Color.fromARGB(255, 253, 164, 59),
-              ],
-            )),
-          ),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/Logo.png',
-                height: 50,
-                width: 50,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                'MangaLink',
-                style: GoogleFonts.montserrat(
-                    textStyle: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 40,
-                )),
-              )
-            ],
-          )),
+      appBar: getAppBar(context),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
