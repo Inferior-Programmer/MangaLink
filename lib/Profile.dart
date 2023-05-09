@@ -57,8 +57,8 @@ class _ProfileState extends State<Profile> {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(
         source: ImageSource.gallery,
-        maxHeight: 128,
-        maxWidth: 128,
+        maxHeight: 256,
+        maxWidth: 256,
         imageQuality: 75);
     if (pickedFile != null) {
       final bytes = await pickedFile.readAsBytes();
@@ -200,6 +200,7 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     getPostList();
+    getImage();
   }
 
   dynamic images = AssetImage('icons/Kanon.jpg');
