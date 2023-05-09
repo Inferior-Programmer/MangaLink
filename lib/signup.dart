@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'main.dart';
 import 'model/callerfunctions.dart';
 import 'generalcomponents/AppBar.dart';
+import 'generalcomponents/DialogShowers.dart';
 
 String query = '''
 query(\$username: String!, \$password: String!){
@@ -20,6 +21,27 @@ query(\$username: String!, \$password: String!){
 }
 ''';
 
+String isPasswordUserNameValid(String password, String username) {
+  if (password == null ||
+      username == null ||
+      password.isEmpty ||
+      username.isEmpty) {
+    return "Forms cannot be empty";
+  }
+  if (password.contains(RegExp(r'[^\w@_]+')) ||
+      username.contains(RegExp(r'[^\w@_]+'))) {
+    return "Invalid Characters on the Forms";
+  }
+  if (password.length < 5 || password.length > 20) {
+    return "Password length has to be between 5 and 20 characters";
+  }
+
+  if (username.length < 5 || username.length > 20) {
+    return "Username length has to be between 5 and 20 characters";
+  }
+  return "true";
+}
+
 class Signup extends StatefulWidget {
   const Signup({super.key});
 
@@ -31,7 +53,8 @@ class _LoginState extends State<Signup> {
   final userController = TextEditingController();
   final passController = TextEditingController();
   final passTwoController = TextEditingController();
-
+  bool passwordVisible = false;
+  bool passwordVisible2 = false;
   @override
   void dispose() {
     userController.dispose();
@@ -133,10 +156,24 @@ class _LoginState extends State<Signup> {
                 width: 359,
                 child: TextField(
                   controller: passController,
-                  obscureText: true,
+                  obscureText: !passwordVisible,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
+                      border: OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            passwordVisible = !passwordVisible;
+                          });
+                        },
+                      )),
                 ),
               ),
               const SizedBox(
@@ -166,9 +203,24 @@ class _LoginState extends State<Signup> {
                 width: 359,
                 child: TextField(
                   controller: passTwoController,
-                  obscureText: true,
+                  obscureText: !passwordVisible2,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        // Based on passwordVisible state choose the icon
+                        passwordVisible2
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {
+                        // Update the state i.e. toogle the state of passwordVisible variable
+                        setState(() {
+                          passwordVisible2 = !passwordVisible2;
+                        });
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -183,68 +235,31 @@ class _LoginState extends State<Signup> {
                     var userText = userController.text;
                     var passOne = passController.text;
                     var passTwo = passTwoController.text;
+
                     if (passOne == passTwo) {
+                      String checkValidity =
+                          isPasswordUserNameValid(passOne, userText);
+
+                      if (checkValidity.compareTo("true") != 0) {
+                        showDialogs(context, "SignUp Error", checkValidity);
+                        return;
+                      }
                       Map<String, dynamic> variables = {
                         'username': userText,
                         'password': passOne
                       };
                       graphqlQuery(query, variables).then((result) {
                         if (result['data']['signup']['success']) {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('SignUp Success'),
-                                content: Text('Signing Up Success!'),
-                                actions: [
-                                  TextButton(
-                                    child: Text('OK'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
+                          showDialogs(
+                              context, "SignUp Success", 'Signing Up Success!');
                         } else {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text("Username taken"),
-                                content: Text('Username is already taken!'),
-                                actions: [
-                                  TextButton(
-                                    child: Text('OK'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
+                          showDialogs(context, "SignUp Error",
+                              "Username is already taken!");
                         }
                       });
                     } else {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('SignUp Error'),
-                            content: Text("Passwords Don't Match"),
-                            actions: [
-                              TextButton(
-                                child: Text('OK'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      showDialogs(
+                          context, 'SignUp Error', "Passwords Don't Match");
                     }
                   },
                   child: Text(

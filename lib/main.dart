@@ -37,12 +37,12 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final userController = TextEditingController();
   final passController = TextEditingController();
-
+  bool showPassword = false;
   @override
   void dispose() {
+    super.dispose();
     userController.dispose();
     passController.dispose();
-    super.dispose();
   }
 
   @override
@@ -139,10 +139,24 @@ class _LoginState extends State<Login> {
                 width: 359,
                 child: TextField(
                   controller: passController,
-                  obscureText: true,
+                  obscureText: !showPassword,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
+                      border: OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          showPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            showPassword = !showPassword;
+                          });
+                        },
+                      )),
                 ),
               ),
               const SizedBox(

@@ -1,10 +1,15 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 Future<Map<String, dynamic>> graphqlQuery(
     String query, Map<String, dynamic> variables) async {
+  String theUrl = 'http://127.0.0.1:5000/graphql';
+  if (!kIsWeb) {
+    theUrl = 'http://10.0.2.2:5000/graphql';
+  }
   final response = await http.post(
-    Uri.parse('http://127.0.0.1:5000/graphql'),
+    Uri.parse(theUrl),
     headers: {
       'Content-Type': 'application/json',
     },

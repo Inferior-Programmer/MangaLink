@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
 import 'ReadPage.dart';
 import 'generalcomponents/AppBar.dart';
+import 'generalcomponents/DialogShowers.dart';
 
 class MangaSummary extends StatefulWidget {
   MangaSummary(
@@ -237,11 +238,19 @@ class _MangaSummaryState extends State<MangaSummary> {
                               width: double
                                   .infinity, // Set the width to fill all available horizontal space
                               child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(
-                                      0xFFF0EFF0), // Set the background color
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.deepPurple[
+                                          900]), // Set the background color
                                 ),
                                 onPressed: () {
+                                  if (chapterNames.length == 0) {
+                                    showDialogs(
+                                        context,
+                                        "No Available Chapters",
+                                        "Manga has no available chapters");
+                                    return;
+                                  }
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'model/callerfunctions.dart';
 import 'generalcomponents/AppBar.dart';
+import 'generalcomponents/DialogShowers.dart';
 
 String query4 = '''
 
@@ -214,23 +215,16 @@ class _MakeReviewState extends State<MakeReview> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_titleController.text.length > 25) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(' '),
-                            content: Text('Title Too Long!'),
-                            actions: [
-                              TextButton(
-                                child: Text('OK'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      showDialogs(context, ' ', 'Title Too Long!');
+                      return;
+                    }
+                    if (_titleController.text.length == 0) {
+                      showDialogs(context, ' ', "Title Can't Be Empty'");
+                      return;
+                    }
+
+                    if (_descriptionController.text.length == 0) {
+                      showDialogs(context, ' ', "Description Can't Be Empty'");
                       return;
                     }
                     Map<String, dynamic> variables = {
@@ -244,41 +238,10 @@ class _MakeReviewState extends State<MakeReview> {
 
                     graphqlQuery(query4, variables).then((result) {
                       if (result['data']['posted']['success']) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text(' '),
-                              content: Text('Review Submission Success!'),
-                              actions: [
-                                TextButton(
-                                  child: Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                        showDialogs(context, ' ', 'Review Submission Success!');
                       } else {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text(' '),
-                              content: Text('Review Submission Failed!'),
-                              actions: [
-                                TextButton(
-                                  child: Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                        showDialogs(context, 'Profane Content Detected!',
+                            'Review Submission Failed!');
                       }
                     });
                   },

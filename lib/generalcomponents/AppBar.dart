@@ -5,11 +5,17 @@ AppBar getAppBar(context, {bool firstPages = false}) {
   List<Widget> nonFirst = [];
   if (!firstPages) {
     nonFirst.add(SizedBox(
-      width: 10,
+      width: MediaQuery.of(context).size.width * 0.2,
     ));
     nonFirst.add(GestureDetector(
-      child: Icon(Icons.logout, color: Colors.black),
+      // can also use EdgeInsets.zero                  child: Text(
+
+      child: Icon(
+        Icons.logout,
+        color: Colors.black,
+      ),
       onTap: () {
+        print("Clicking");
         Navigator.popUntil(context, (route) => route.isFirst);
       },
     ));
@@ -36,18 +42,17 @@ AppBar getAppBar(context, {bool firstPages = false}) {
           Image.asset(
             'assets/Logo.png',
             height: 50,
-            width: 50,
+            width: MediaQuery.of(context).size.width * 0.2,
           ),
-          SizedBox(
-            width: 10,
-          ),
-          Text(
-            'MangaLink',
-            style: GoogleFonts.montserrat(
-                textStyle: const TextStyle(
-              color: Colors.black,
-              fontSize: 40,
-            )),
+          FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Text(
+              'MangaLink',
+              style: GoogleFonts.montserrat(
+                  textStyle: const TextStyle(
+                color: Colors.black,
+              )),
+            ),
           ),
           ...nonFirst
         ],
