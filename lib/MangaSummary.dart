@@ -7,6 +7,13 @@ import 'ReadPage.dart';
 import 'generalcomponents/AppBar.dart';
 import 'generalcomponents/DialogShowers.dart';
 
+String predictorQuery = '''
+query(\$username: String!, \$anime: String){
+  prediction(username: \$username, anime: \$anime)
+}
+
+''';
+
 class MangaSummary extends StatefulWidget {
   MangaSummary(
       {super.key,
@@ -39,6 +46,7 @@ class MangaSummary extends StatefulWidget {
 class _MangaSummaryState extends State<MangaSummary> {
   bool loaded = false;
   List<Widget> chapterNames = [];
+  String predictedVals = "-1";
   List<Widget> tags = [
     Text(
       "Tags: ",
@@ -64,6 +72,15 @@ class _MangaSummaryState extends State<MangaSummary> {
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Map<String, dynamic> variables = {
+        "username": widget.userData['user']['username'],
+        "anime": widget.id
+      };
+      await graphqlQuery(predictorQuery, variables).then((result) async {
+        if (result['data'] != null && result['data']['prediction'] != null) {
+          predictedVals = result['data']['prediction'];
+        }
+      });
       await fetchChapters(widget.id, offset: 0, limit: 100).then((val) async {
         List<dynamic> data = jsonDecode(val.body)['data'];
         dynamic lastchapter = -1;
@@ -222,7 +239,7 @@ class _MangaSummaryState extends State<MangaSummary> {
                             ),
                             Flexible(
                               child: Container(
-                                height: 125,
+                                height: 80,
                                 child: SingleChildScrollView(
                                   child: Text(
                                     widget.description,
@@ -233,6 +250,12 @@ class _MangaSummaryState extends State<MangaSummary> {
                                   ),
                                 ),
                               ),
+                            ),
+                            Text(
+                              'Predicted User Rating: ' + predictedVals,
+                              style: GoogleFonts.montserrat(
+                                  textStyle: const TextStyle(
+                                      color: Colors.black, fontSize: 12)),
                             ),
                             SizedBox(
                               width: double
