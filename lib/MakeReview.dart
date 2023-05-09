@@ -6,8 +6,8 @@ import 'callerfunctions.dart';
 
 String query4 = '''
 
-query(\$username: String!, \$anime: String!, \$rating: Int!, \$text: String!, \$title: String!){
-  posted(username: \$username, anime: \$anime, rating: \$rating, text: \$text, title: \$title){
+query(\$username: String!, \$anime: String!, \$rating: Int!, \$text: String!, \$title: String!, \$seriesName: String!){
+  posted(username: \$username, anime: \$anime, rating: \$rating, text: \$text, title: \$title, seriesName: \$seriesName){
     success
   }
 }
@@ -266,7 +266,8 @@ class _MakeReviewState extends State<MakeReview> {
                       'anime': widget.seriesId,
                       'rating': int.parse(ratevals),
                       'title': _titleController.text,
-                      'text': _descriptionController.text
+                      'text': _descriptionController.text,
+                      'seriesName': widget.seriesTitle,
                     };
 
                     graphqlQuery(query4, variables).then((result) {
