@@ -61,9 +61,7 @@ query(\$anime: String!, \$username: String!){
 class _PageReviewState extends State<PageReview> {
   double ratings = 0;
   List<Widget> tags = [
-    Text("Tags: ",
-        style:
-            TextStyle(color: Colors.black, backgroundColor: Color(0xFFF0EFF0))),
+    Text("Tags: ", style: TextStyle(color: Colors.deepPurple[900])),
   ];
 
   List<Widget> userPosting = [];
@@ -94,9 +92,9 @@ class _PageReviewState extends State<PageReview> {
       tags.add(Text(
         vars,
         style: TextStyle(
-            color: Colors.black,
-            fontSize: 16,
-            backgroundColor: Color(0xFFF0EFF0)),
+          color: Colors.deepPurple[900],
+          fontSize: 16,
+        ),
       ));
       tags.add(Padding(
           padding: EdgeInsets.only(left: 0, bottom: 0, top: 0, right: 5)));
@@ -226,6 +224,9 @@ class _PageReviewState extends State<PageReview> {
                                 ]),
                               )),
                         ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Flexible(
                             child: SizedBox(
                                 height: 30,
@@ -255,6 +256,9 @@ class _PageReviewState extends State<PageReview> {
                                         fontSize: 20,
                                       ))),
                                 ))),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Flexible(
                             child: SizedBox(
                                 height: 30,

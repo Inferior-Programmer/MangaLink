@@ -128,13 +128,15 @@ class _ReadState extends State<Read> {
                   const SizedBox(
                     width: 10,
                   ),
-                  Text(
-                    widget.chapters[nameToIndex[dropDownvalue2]!]['title'] ??
-                        '0',
-                    style: GoogleFonts.lexend(
-                        textStyle: const TextStyle(
-                      fontSize: 30,
-                    )),
+                  Flexible(
+                    child: Text(
+                      widget.chapters[nameToIndex[dropDownvalue2]!]['title'] ??
+                          '0',
+                      style: GoogleFonts.lexend(
+                          textStyle: const TextStyle(
+                        fontSize: 30,
+                      )),
+                    ),
                   ),
                 ],
               ),
@@ -156,7 +158,10 @@ class _ReadState extends State<Read> {
                       dropDownvalue1 = pagesName[index];
                       setState(() {});
                     },
-                    icon: Icon(Icons.arrow_back),
+                    icon: Icon(
+                      Icons.navigate_before_rounded,
+                      color: Colors.black,
+                    ),
                   ),
                   IconButton(
                     onPressed: () {
@@ -169,7 +174,10 @@ class _ReadState extends State<Read> {
                       dropDownvalue1 = pagesName[index];
                       setState(() {});
                     },
-                    icon: Icon(Icons.arrow_forward),
+                    icon: Icon(
+                      Icons.navigate_next_rounded,
+                      color: Colors.black,
+                    ),
                   ),
                 ],
               ), // sample langs

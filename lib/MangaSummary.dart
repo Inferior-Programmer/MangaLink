@@ -12,7 +12,6 @@ String predictorQuery = '''
 query(\$username: String!, \$anime: String){
   prediction(username: \$username, anime: \$anime)
 }
-
 ''';
 
 class MangaSummary extends StatefulWidget {
@@ -52,9 +51,9 @@ class _MangaSummaryState extends State<MangaSummary> {
     Text(
       "Tags: ",
       style: TextStyle(
-          color: Colors.black,
-          fontSize: 16,
-          backgroundColor: Color(0xFFF0EFF0)),
+        color: Colors.deepPurple[900],
+        fontSize: 16,
+      ),
     )
   ];
   List<dynamic> chapters = [];
@@ -64,9 +63,9 @@ class _MangaSummaryState extends State<MangaSummary> {
       tags.add(Text(
         vars,
         style: TextStyle(
-            color: Colors.black,
-            fontSize: 16,
-            backgroundColor: Color(0xFFF0EFF0)),
+          color: Colors.deepPurple[900],
+          fontSize: 16,
+        ),
       ));
       tags.add(Padding(
           padding: EdgeInsets.only(left: 0, bottom: 0, top: 0, right: 5)));
@@ -255,17 +254,25 @@ class _MangaSummaryState extends State<MangaSummary> {
                                 ),
                               ),
                             ),
+                            const SizedBox(
+                              height: 5,
+                            ),
                             Flexible(
                                 child: FittedBox(
                               fit: BoxFit.fitWidth,
                               child: Text(
-                                'Predicted User Rating: ' + predictedVals,
-                                style: GoogleFonts.montserrat(
+                                'Predicted User Rating: ' +
+                                    predictedVals.substring(
+                                        0, min(4, predictedVals.length)),
+                                style: GoogleFonts.lexend(
                                     textStyle: const TextStyle(
                                   color: Colors.black,
                                 )),
                               ),
                             )),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             SizedBox(
                               width: double
                                   .infinity, // Set the width to fill all available horizontal space
@@ -297,6 +304,9 @@ class _MangaSummaryState extends State<MangaSummary> {
                                       fontSize: 20,
                                     ))),
                               ),
+                            ),
+                            const SizedBox(
+                              height: 10,
                             ),
                             SizedBox(
                               width: double

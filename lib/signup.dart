@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'main.dart';
 import 'model/callerfunctions.dart';
@@ -30,7 +28,7 @@ String isPasswordUserNameValid(String password, String username) {
   }
   if (password.contains(RegExp(r'[^\w@_]+')) ||
       username.contains(RegExp(r'[^\w@_]+'))) {
-    return "Invalid Characters on the Forms";
+    return "Characters may only be alphanumeric or @ or _";
   }
   if (password.length < 5 || password.length > 20) {
     return "Password length has to be between 5 and 20 characters";

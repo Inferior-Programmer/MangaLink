@@ -180,26 +180,34 @@ class _HomePageState extends State<HomePage> {
                   if (index == 0) {
                     return Column(
                       children: [
+                        const SizedBox(
+                          height: 3,
+                        ),
                         Text(
                           widget.names,
                           style: TextStyle(fontSize: 20),
                         ),
+                        const SizedBox(
+                          height: 5,
+                        ),
                         Padding(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 left: 0, bottom: 4, top: 2, right: 2),
                             child: SizedBox(
+                              width: 350,
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8.0),
                                   child: ColoredBox(
                                     color: Colors.white,
                                     child: TextField(
                                       controller: _controller,
+                                      decoration: InputDecoration(
+                                          prefixIcon: Icon(Icons.search)),
                                       onSubmitted: (String value) {
                                         initialCalling(_controller.text);
                                       },
                                     ),
                                   )),
-                              width: 350,
                             )),
                         Row(
                           children: childs,
