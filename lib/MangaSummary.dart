@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'ReadPage.dart';
 import 'generalcomponents/AppBar.dart';
 import 'generalcomponents/DialogShowers.dart';
+import 'ReviewSpecPage.dart';
 
 String predictorQuery = '''
 query(\$username: String!, \$anime: String){
@@ -228,21 +229,24 @@ class _MangaSummaryState extends State<MangaSummary> {
                             Flexible(
                                 child: Text(
                               widget.title,
-                              style: TextStyle(
+                              style: GoogleFonts.lexend(
+                                  textStyle: TextStyle(
                                 color: Colors.black,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                              ),
+                              )),
                             )),
                             Wrap(
                               children: [...tags],
                             ),
                             Flexible(
                               child: Container(
-                                height: 80,
+                                margin: EdgeInsets.only(right: 5),
+                                height: 135,
                                 child: SingleChildScrollView(
                                   child: Text(
                                     widget.description,
+                                    textAlign: TextAlign.justify,
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 12,
@@ -251,12 +255,17 @@ class _MangaSummaryState extends State<MangaSummary> {
                                 ),
                               ),
                             ),
-                            Text(
-                              'Predicted User Rating: ' + predictedVals,
-                              style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      color: Colors.black, fontSize: 12)),
-                            ),
+                            Flexible(
+                                child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Text(
+                                'Predicted User Rating: ' + predictedVals,
+                                style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                  color: Colors.black,
+                                )),
+                              ),
+                            )),
                             SizedBox(
                               width: double
                                   .infinity, // Set the width to fill all available horizontal space
@@ -283,9 +292,37 @@ class _MangaSummaryState extends State<MangaSummary> {
                                               )));
                                 },
                                 child: Text('Read',
-                                    style: GoogleFonts.montserrat(
+                                    style: GoogleFonts.lexend(
                                         textStyle: const TextStyle(
-                                      color: Colors.black,
+                                      fontSize: 20,
+                                    ))),
+                              ),
+                            ),
+                            SizedBox(
+                              width: double
+                                  .infinity, // Set the width to fill all available horizontal space
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.orange[
+                                          900]), // Set the background color
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PageReview(
+                                                id: widget.id,
+                                                description: widget.description,
+                                                title: widget.title,
+                                                coverArt: widget.coverArt,
+                                                tags: widget.tags,
+                                                userData: widget.userData,
+                                              )));
+                                },
+                                child: Text('Reviews',
+                                    style: GoogleFonts.lexend(
+                                        textStyle: const TextStyle(
                                       fontSize: 20,
                                     ))),
                               ),

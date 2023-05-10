@@ -45,6 +45,44 @@ class _LoginState extends State<Login> {
     passController.dispose();
   }
 
+  void logins() {
+    var userText = userController.text;
+    var passText = passController.text;
+    Map<String, dynamic> variables = {
+      'username': userText,
+      'password': passText
+    };
+    graphqlQuery(query, variables).then((result) {
+      if (result['data']['login']['success']) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MyHomePage(
+                      title: 'MangaLink',
+                      userData: result['data']['login'],
+                    )));
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Login Failed'),
+              content: Text('Login Failed!'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,6 +144,9 @@ class _LoginState extends State<Login> {
                 height: 55,
                 width: 359,
                 child: TextField(
+                  onSubmitted: (s) {
+                    logins();
+                  },
                   controller: userController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -138,6 +179,9 @@ class _LoginState extends State<Login> {
                 height: 55,
                 width: 359,
                 child: TextField(
+                  onSubmitted: (s) {
+                    logins();
+                  },
                   controller: passController,
                   obscureText: !showPassword,
                   decoration: InputDecoration(
@@ -167,41 +211,7 @@ class _LoginState extends State<Login> {
                 width: 359,
                 child: ElevatedButton(
                   onPressed: () async {
-                    var userText = userController.text;
-                    var passText = passController.text;
-                    Map<String, dynamic> variables = {
-                      'username': userText,
-                      'password': passText
-                    };
-                    graphqlQuery(query, variables).then((result) {
-                      if (result['data']['login']['success']) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MyHomePage(
-                                      title: 'MangaLink',
-                                      userData: result['data']['login'],
-                                    )));
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Login Failed'),
-                              content: Text('Login Failed!'),
-                              actions: [
-                                TextButton(
-                                  child: Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                    });
+                    logins();
                   },
                   child: Text(
                     'SIGN IN',
@@ -241,18 +251,6 @@ class _LoginState extends State<Login> {
                 children: [
                   const SizedBox(
                     width: 35,
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Text(
-                      'Forgot Password?',
-                      style: GoogleFonts.lexend(
-                          textStyle: const TextStyle(
-                        color: Color.fromARGB(255, 62, 114, 191),
-                        fontSize: 12,
-                        decoration: TextDecoration.underline,
-                      )),
-                    ),
                   ),
                 ],
               ),

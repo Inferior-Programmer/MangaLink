@@ -7,7 +7,7 @@ AppBar getAppBar(context, {bool firstPages = false}) {
     nonFirst.add(SizedBox(
       width: MediaQuery.of(context).size.width * 0.2,
     ));
-    nonFirst.add(GestureDetector(
+    nonFirst.add(InkWell(
       // can also use EdgeInsets.zero                  child: Text(
 
       child: Icon(

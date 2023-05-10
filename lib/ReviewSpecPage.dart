@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:newproject/MangaSummary.dart';
 import 'package:newproject/Profile.dart';
 import 'model/callerfunctions.dart';
 import 'MakeReview.dart';
@@ -61,10 +62,8 @@ class _PageReviewState extends State<PageReview> {
   double ratings = 0;
   List<Widget> tags = [
     Text("Tags: ",
-        style: TextStyle(
-            color: Colors.black,
-            fontSize: 16,
-            backgroundColor: Color(0xFFF0EFF0))),
+        style:
+            TextStyle(color: Colors.black, backgroundColor: Color(0xFFF0EFF0))),
   ];
 
   List<Widget> userPosting = [];
@@ -117,7 +116,7 @@ class _PageReviewState extends State<PageReview> {
     for (int i = 0; i < ratings.round() - 1; i++) {
       numOfStars.add(Icon(
         Icons.star,
-        size: 16,
+        size: 14,
         color: Colors.deepPurple[900],
       ));
     }
@@ -203,13 +202,63 @@ class _PageReviewState extends State<PageReview> {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
+                        Flexible(
+                          child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: RichText(
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                      text: 'Overall Rating: ',
+                                      style: GoogleFonts.lexend(
+                                          textStyle:
+                                              TextStyle(color: Colors.black))),
+                                  WidgetSpan(
+                                    child: Row(
+                                      children: [
+                                        ...numOfStars,
+                                        Text(ratings.toStringAsFixed(2),
+                                            style: GoogleFonts.lexend(
+                                                textStyle: TextStyle(
+                                                    color: Colors.black)))
+                                      ],
+                                    ),
+                                  )
+                                ]),
+                              )),
                         ),
                         Flexible(
                             child: SizedBox(
                                 height: 30,
-                                width: 150,
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => MangaSummary(
+                                                  id: widget.id,
+                                                  description:
+                                                      widget.description,
+                                                  title: widget.title,
+                                                  coverArt: widget.coverArt,
+                                                  tags: widget.tags,
+                                                  userData: widget.userData,
+                                                )));
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.orange[900])),
+                                  child: Text('Chapters',
+                                      style: GoogleFonts.lexend(
+                                          textStyle: TextStyle(
+                                        fontSize: 20,
+                                      ))),
+                                ))),
+                        Flexible(
+                            child: SizedBox(
+                                height: 30,
+                                width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: () {
                                     String startingTitle = ' ';
@@ -284,33 +333,6 @@ class _PageReviewState extends State<PageReview> {
                                         fontSize: 20,
                                       ))),
                                 ))),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        SizedBox(
-                            height: 50,
-                            child: RichText(
-                              text: TextSpan(children: [
-                                TextSpan(
-                                    text: 'Overall Rating: ',
-                                    style: GoogleFonts.lexend(
-                                        textStyle: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black))),
-                                WidgetSpan(
-                                  child: Row(
-                                    children: [
-                                      ...numOfStars,
-                                      Text(ratings.toStringAsFixed(2),
-                                          style: GoogleFonts.lexend(
-                                              textStyle: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.black)))
-                                    ],
-                                  ),
-                                )
-                              ]),
-                            ))
                       ],
                     ),
                   ),

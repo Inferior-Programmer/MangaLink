@@ -62,6 +62,34 @@ class _LoginState extends State<Signup> {
     passTwoController.dispose();
   }
 
+  void signups() {
+    var userText = userController.text;
+    var passOne = passController.text;
+    var passTwo = passTwoController.text;
+
+    if (passOne == passTwo) {
+      String checkValidity = isPasswordUserNameValid(passOne, userText);
+
+      if (checkValidity.compareTo("true") != 0) {
+        showDialogs(context, "SignUp Error", checkValidity);
+        return;
+      }
+      Map<String, dynamic> variables = {
+        'username': userText,
+        'password': passOne
+      };
+      graphqlQuery(query, variables).then((result) {
+        if (result['data']['signup']['success']) {
+          showDialogs(context, "SignUp Success", 'Signing Up Success!');
+        } else {
+          showDialogs(context, "SignUp Error", "Username is already taken!");
+        }
+      });
+    } else {
+      showDialogs(context, 'SignUp Error', "Passwords Don't Match");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,6 +151,9 @@ class _LoginState extends State<Signup> {
                 height: 55,
                 width: 359,
                 child: TextField(
+                  onSubmitted: (s) {
+                    signups();
+                  },
                   controller: userController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -155,6 +186,9 @@ class _LoginState extends State<Signup> {
                 height: 55,
                 width: 359,
                 child: TextField(
+                  onSubmitted: (s) {
+                    signups();
+                  },
                   controller: passController,
                   obscureText: !passwordVisible,
                   decoration: InputDecoration(
@@ -202,6 +236,9 @@ class _LoginState extends State<Signup> {
                 height: 55,
                 width: 359,
                 child: TextField(
+                  onSubmitted: (s) {
+                    signups();
+                  },
                   controller: passTwoController,
                   obscureText: !passwordVisible2,
                   decoration: InputDecoration(
@@ -232,35 +269,7 @@ class _LoginState extends State<Signup> {
                 width: 359,
                 child: ElevatedButton(
                   onPressed: () {
-                    var userText = userController.text;
-                    var passOne = passController.text;
-                    var passTwo = passTwoController.text;
-
-                    if (passOne == passTwo) {
-                      String checkValidity =
-                          isPasswordUserNameValid(passOne, userText);
-
-                      if (checkValidity.compareTo("true") != 0) {
-                        showDialogs(context, "SignUp Error", checkValidity);
-                        return;
-                      }
-                      Map<String, dynamic> variables = {
-                        'username': userText,
-                        'password': passOne
-                      };
-                      graphqlQuery(query, variables).then((result) {
-                        if (result['data']['signup']['success']) {
-                          showDialogs(
-                              context, "SignUp Success", 'Signing Up Success!');
-                        } else {
-                          showDialogs(context, "SignUp Error",
-                              "Username is already taken!");
-                        }
-                      });
-                    } else {
-                      showDialogs(
-                          context, 'SignUp Error', "Passwords Don't Match");
-                    }
+                    signups();
                   },
                   child: Text(
                     'SIGN UP',
@@ -300,18 +309,6 @@ class _LoginState extends State<Signup> {
                 children: [
                   const SizedBox(
                     width: 35,
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Text(
-                      'Forgot Password?',
-                      style: GoogleFonts.lexend(
-                          textStyle: const TextStyle(
-                        color: Color.fromARGB(255, 62, 114, 191),
-                        fontSize: 12,
-                        decoration: TextDecoration.underline,
-                      )),
-                    ),
                   ),
                 ],
               ),

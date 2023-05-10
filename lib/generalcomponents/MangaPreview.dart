@@ -62,7 +62,7 @@ class _MangaPreviewState extends State<MangaPreview> {
               min(i + widget.numberOfCharactersPerLine, lessenedTitle.length)) +
           "\n";
     }
-    return GestureDetector(
+    return InkWell(
         onTap: () => {
               if (widget.types == 'Review')
                 {

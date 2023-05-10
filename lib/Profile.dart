@@ -196,7 +196,7 @@ class _ProfileState extends State<Profile> {
               child: Container(
                 height: 175,
                 width: 175,
-                child: GestureDetector(
+                child: InkWell(
                   onTap: () {
                     getImageAndUpload();
                   },
@@ -210,7 +210,9 @@ class _ProfileState extends State<Profile> {
               height: 20,
             ),
             Text(
-              widget.userData['user']['username'],
+              (widget.frozen)
+                  ? widget.lookAt
+                  : widget.userData['user']['username'],
               style: GoogleFonts.lexend(
                   textStyle: const TextStyle(
                 fontSize: 30,

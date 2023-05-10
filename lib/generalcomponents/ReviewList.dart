@@ -56,7 +56,8 @@ void getPostList(userPosting, variables, query, setState, funcs, titleName,
           textAlign: TextAlign.justify,
         ),
       ));
-      userPosting.add(GestureDetector(
+      userPosting.add(InkWell(
+          hoverColor: Colors.black.withOpacity(0.5),
           child: Column(children: colsss),
           onTap: () {
             funcs(i);
